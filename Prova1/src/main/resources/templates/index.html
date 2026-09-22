@@ -1,0 +1,49 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org" lang="pt-BR">
+
+<head>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+    <form method="get" th:action="@{/}" class="filtros">
+        <input type="text" name="texto" th:value="${textoSelecionado}">
+        <select name="cargo" id="">
+            <option value="" th:selected="${cargoSelecionado == ''}">Todos</option>
+            <option th:each="c : ${cargos}" th:value="${c}" th:text="${c}" th:selected="${c == cargoSelecionado}">
+            </option>
+        </select>
+        <button type="submit">Filtrar</button>
+        <a th:href="@{/}" class="limpar">Limpar</a>
+    </form>
+    <div class="grade-candidatos">
+    <div class="card" th:each="cand : ${candidatos}">
+        <img th:src="@{'/images/candidatos/' + ${cand.nomeArquivoFoto}}" th:alt="${cand.nomeUrna}"
+            class="foto-candidato">
+
+        <p class="situacao" th:if="${cand.situacaoCandidatura != null and !cand.situacaoCandidatura.isBlank()}"
+            th:text="${cand.situacaoCandidatura}">Situacao</p>
+
+        <p class="extra" th:if="${cand.idade > 0}">
+            <span th:text="${cand.idade + ' anos'}">idade</span>
+        </p>
+
+        <p class="extra" th:if="${cand.grauInstrucao != null and !cand.grauInstrucao.isBlank()}"
+            th:text="${cand.grauInstrucao}">Escolaridade</p>
+
+    </div>
+    </div>
+    <div>
+        <p class="resultado-info">
+            <span th:text="${totalEncontrado}">0</span> candidato(s) encontrado(s)
+        </p>
+
+        <p th:if="${totalEncontrado == 0}" class="sem-resultado">
+            nenhum candidato encontrado com esses filtros
+        </p>
+
+    </div>
+</body>
+
+</html>
